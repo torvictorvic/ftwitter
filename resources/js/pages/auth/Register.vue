@@ -58,6 +58,28 @@ defineOptions({
             </div>
 
             <div class="grid gap-2">
+                <Label for="username" class="text-sm font-medium">Username</Label>
+                <Input
+                    id="username"
+                    type="text"
+                    autocomplete="username"
+                    class="w-full rounded-lg border px-3 py-2"
+                    data-test="register-username"
+                />
+            </div>
+
+            <div class="grid gap-2">
+                <Label for="bio" class="text-sm font-medium">Bio</Label>
+                <Input
+                    id="bio"
+                    rows="3"
+                    maxlength="160"
+                    class="w-full rounded-lg border px-3 py-2"
+                    data-test="register-bio"
+                />
+            </div>
+
+            <div class="grid gap-2">
                 <Label for="password">Password</Label>
                 <PasswordInput
                     id="password"
