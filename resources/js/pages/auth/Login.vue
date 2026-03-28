@@ -8,9 +8,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
+import { register } from '@/routes/index';
+import { store } from '@/routes/login/index';
+import { request } from '@/routes/password/index';
 
 defineOptions({
     layout: {
@@ -29,10 +29,7 @@ defineProps<{
 <template>
     <Head title="Log in" />
 
-    <div
-        v-if="status"
-        class="mb-4 text-center text-sm font-medium text-green-600"
-    >
+    <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
         {{ status }}
     </div>
 
@@ -61,12 +58,7 @@ defineProps<{
             <div class="grid gap-2">
                 <div class="flex items-center justify-between">
                     <Label for="password">Password</Label>
-                    <TextLink
-                        v-if="canResetPassword"
-                        :href="request()"
-                        class="text-sm"
-                        :tabindex="5"
-                    >
+                    <TextLink v-if="canResetPassword" :href="request()" class="text-sm" :tabindex="5">
                         Forgot password?
                     </TextLink>
                 </div>
@@ -100,10 +92,7 @@ defineProps<{
             </Button>
         </div>
 
-        <div
-            class="text-center text-sm text-muted-foreground"
-            v-if="canRegister"
-        >
+        <div v-if="canRegister" class="text-center text-sm text-muted-foreground">
             Don't have an account?
             <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
         </div>

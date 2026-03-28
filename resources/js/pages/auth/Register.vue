@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { login } from '@/routes';
-import { store } from '@/routes/register';
+import { login } from '@/routes/index';
+import { store } from '@/routes/register/index';
 
 defineOptions({
     layout: {
@@ -115,9 +115,9 @@ defineOptions({
             <Button
                 type="submit"
                 class="mt-2 w-full"
-                tabindex="7"
+                :tabindex="7"
                 :disabled="processing"
-                data-test="register-user-button"
+                data-test="register-submit"
             >
                 <Spinner v-if="processing" />
                 Create account
@@ -126,12 +126,9 @@ defineOptions({
 
         <div class="text-center text-sm text-muted-foreground">
             Already have an account?
-            <TextLink
-                :href="login()"
-                class="underline underline-offset-4"
-                :tabindex="6"
-                >Log in</TextLink
-            >
+            <TextLink :href="login()" class="underline underline-offset-4" :tabindex="8">
+                Log in
+            </TextLink>
         </div>
     </Form>
 </template>

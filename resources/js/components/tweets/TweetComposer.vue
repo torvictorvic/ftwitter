@@ -13,7 +13,7 @@ const submit = () => {
   form.transform((data) => ({
     ...data,
     body: data.body.trim(),
-  })).post(route('tweets.store'), {
+  })).post('/tweets', {
     preserveScroll: true,
     onSuccess: () => form.reset(),
   })
