@@ -1,4 +1,4 @@
-# Flock Twitter Clone
+# Twitter Clone
 
 A functional Twitter/X clone built as a full-stack technical challenge using **Laravel 13**, **Vue 3**, **Inertia.js**, **Tailwind CSS 4**, and **SQLite**.
 
