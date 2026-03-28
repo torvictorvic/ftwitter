@@ -23,11 +23,14 @@ const submit = (): void => {
 
 <template>
     <button
-        type="button"
-        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
-        @click="submit"
-        data-test="follow-button"
+      type="button"
+      class="rounded-lg px-4 py-2 text-sm font-semibold transition"
+      :class="isFollowing
+        ? 'border border-border bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground'
+        : 'bg-primary text-primary-foreground hover:opacity-90'"
+      @click="submit"
+      data-test="follow-button"
     >
-        {{ isFollowing ? 'Following' : 'Follow' }}
+      {{ isFollowing ? 'Siguiendo' : 'Seguir' }}
     </button>
 </template>

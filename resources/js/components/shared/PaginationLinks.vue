@@ -16,9 +16,11 @@ defineProps<{
       v-for="link in links"
       :key="`${link.label}-${link.url}`"
       :href="link.url ?? ''"
-      class="rounded-lg border px-3 py-2 text-sm"
+      class="rounded-lg border px-3 py-2 text-sm transition"
       :class="[
-        link.active ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 bg-white text-slate-700',
+        link.active
+          ? 'border-primary bg-primary text-primary-foreground'
+          : 'border-border bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground',
         !link.url ? 'pointer-events-none opacity-50' : '',
       ]"
       v-html="link.label"

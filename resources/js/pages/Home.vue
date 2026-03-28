@@ -18,8 +18,11 @@ defineProps<{
       <section class="space-y-4">
         <TweetComposer />
 
-        <div v-if="tweets.data.length === 0" class="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-600">
-          Tu timeline esta vacio por ahora. Sigue usuarios o crea tu primer tweet.
+        <div
+          v-if="tweets.data.length === 0"
+          class="rounded-2xl border border-dashed border-border bg-card p-6 text-sm text-muted-foreground"
+        >
+         Your timeline is empty for now. Follow users or create your first tweet.
         </div>
 
         <TweetCard
@@ -32,10 +35,10 @@ defineProps<{
       </section>
 
       <aside class="space-y-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <h2 class="text-sm font-semibold text-slate-900">Sugerencias</h2>
-          <p class="mt-2 text-sm text-slate-600">
-            Busca usuarios y empieza a seguir cuentas para poblar tu timeline.
+        <div class="rounded-2xl border border-border bg-card p-4 text-card-foreground shadow-sm">
+          <h2 class="text-sm font-semibold">Suggestions</h2>
+          <p class="mt-2 text-sm text-muted-foreground">
+            Search for users and start following accounts to populate your timeline.
           </p>
         </div>
       </aside>

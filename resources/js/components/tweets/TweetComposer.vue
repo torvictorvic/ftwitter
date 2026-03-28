@@ -21,9 +21,9 @@ const submit = () => {
 </script>
 
 <template>
-  <form @submit.prevent="submit" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-    <label for="tweet-body" class="mb-2 block text-sm font-medium text-slate-700">
-      ¿Que esta pasando?
+  <form @submit.prevent="submit" class="rounded-2xl border border-border bg-card p-4 text-card-foreground shadow-sm">
+    <label for="tweet-body" class="mb-2 block text-sm font-medium text-card-foreground">
+      What's going on?
     </label>
 
     <textarea
@@ -31,30 +31,30 @@ const submit = () => {
       v-model="form.body"
       rows="4"
       maxlength="280"
-      class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
-      placeholder="Escribe tu tweet..."
+      class="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-ring"
+      placeholder="Write your tweet..."
       data-test="tweet-body"
     />
 
-    <div class="mt-3 flex items-center justify-between">
+    <div class="mt-3 flex items-center justify-between gap-3">
       <p
         class="text-sm"
-        :class="remaining <= 20 ? 'text-amber-600' : 'text-slate-500'"
+        :class="remaining <= 20 ? 'text-amber-600' : 'text-muted-foreground'"
       >
-        {{ remaining }} caracteres restantes
+        {{ remaining }} remaining characters
       </p>
 
       <button
         type="submit"
-        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+        class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         :disabled="form.processing || !canSubmit"
         data-test="tweet-submit"
       >
-        Twittear
+      Tweet
       </button>
     </div>
 
-    <p v-if="form.errors.body" class="mt-2 text-sm text-red-600">
+    <p v-if="form.errors.body" class="mt-2 text-sm text-destructive">
       {{ form.errors.body }}
     </p>
   </form>
