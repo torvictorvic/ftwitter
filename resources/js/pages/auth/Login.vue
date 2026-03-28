@@ -93,7 +93,7 @@ defineProps<{
                 class="mt-4 w-full"
                 :tabindex="4"
                 :disabled="processing"
-                data-test="login-button"
+                data-test="login-submit"
             >
                 <Spinner v-if="processing" />
                 Log in

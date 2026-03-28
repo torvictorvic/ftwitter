@@ -58,25 +58,32 @@ defineOptions({
             </div>
 
             <div class="grid gap-2">
-                <Label for="username" class="text-sm font-medium">Username</Label>
+                <Label for="username">Username</Label>
                 <Input
                     id="username"
                     type="text"
+                    required
+                    :tabindex="3"
                     autocomplete="username"
-                    class="w-full rounded-lg border px-3 py-2"
+                    name="username"
+                    placeholder="victormst"
                     data-test="register-username"
                 />
+                <InputError :message="errors.username" />
             </div>
 
             <div class="grid gap-2">
-                <Label for="bio" class="text-sm font-medium">Bio</Label>
-                <Input
+                <Label for="bio">Bio</Label>
+                <textarea
                     id="bio"
+                    name="bio"
                     rows="3"
                     maxlength="160"
                     class="w-full rounded-lg border px-3 py-2"
+                    placeholder="Short bio"
                     data-test="register-bio"
-                />
+                ></textarea>
+                <InputError :message="errors.bio" />
             </div>
 
             <div class="grid gap-2">
@@ -84,7 +91,7 @@ defineOptions({
                 <PasswordInput
                     id="password"
                     required
-                    :tabindex="3"
+                    :tabindex="5"
                     autocomplete="new-password"
                     name="password"
                     placeholder="Password"
@@ -97,7 +104,7 @@ defineOptions({
                 <PasswordInput
                     id="password_confirmation"
                     required
-                    :tabindex="4"
+                    :tabindex="6"
                     autocomplete="new-password"
                     name="password_confirmation"
                     placeholder="Confirm password"
@@ -108,7 +115,7 @@ defineOptions({
             <Button
                 type="submit"
                 class="mt-2 w-full"
-                tabindex="5"
+                tabindex="7"
                 :disabled="processing"
                 data-test="register-user-button"
             >
