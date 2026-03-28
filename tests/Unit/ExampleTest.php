@@ -1,5 +1,5 @@
 <?php
 
-test('that true is true', function () {
-    expect(true)->toBeTrue();
+test('backend test suite boots successfully', function () {
+    expect(app())->not->toBeNull();
 });

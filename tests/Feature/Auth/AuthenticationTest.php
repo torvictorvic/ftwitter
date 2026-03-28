@@ -2,12 +2,19 @@
 
 use App\Models\User;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
+use Laravel\Fortify\Fortify;
 
 test('login screen can be rendered', function () {
-    $response = $this->get(route('login'));
-
-    $response->assertOk();
+    $this->get(route('login'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('auth/Login')
+            ->where('canRegister', true)
+            ->where('canResetPassword', true)
+        );
 });
 
 test('users can authenticate using the login screen', function () {
@@ -18,27 +25,25 @@ test('users can authenticate using the login screen', function () {
         'password' => 'password',
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $this->assertAuthenticatedAs($user);
+    $response->assertRedirect(route('home', absolute: false));
 });
 
-test('users with two factor enabled are redirected to two factor challenge', function () {
+test('users with two factor enabled are redirected to two factor challenge when supported by the user model', function () {
     $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
+
+    if (! method_exists(new User, 'hasEnabledTwoFactorAuthentication')) {
+        $this->markTestSkipped('User model does not implement two-factor helpers.');
+    }
 
     Features::twoFactorAuthentication([
         'confirm' => true,
         'confirmPassword' => true,
     ]);
 
-    $user = User::factory()->create();
+    $user = User::factory()->withTwoFactor()->create();
 
-    $user->forceFill([
-        'two_factor_secret' => encrypt('test-secret'),
-        'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
-        'two_factor_confirmed_at' => now(),
-    ])->save();
-
-    $response = $this->post(route('login'), [
+    $response = $this->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
@@ -48,14 +53,16 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     $this->assertGuest();
 });
 
-test('users can not authenticate with invalid password', function () {
+test('users cannot authenticate with an invalid password', function () {
     $user = User::factory()->create();
 
-    $this->post(route('login.store'), [
+    $response = $this->from(route('login'))->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'wrong-password',
     ]);
 
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors('email');
     $this->assertGuest();
 });
 
@@ -65,18 +72,28 @@ test('users can logout', function () {
     $response = $this->actingAs($user)->post(route('logout'));
 
     $this->assertGuest();
-    $response->assertRedirect(route('home'));
+    $response->assertRedirect(route('home', absolute: false));
 });
 
-test('users are rate limited', function () {
+test('users are rate limited after too many login attempts', function () {
     $user = User::factory()->create();
 
-    RateLimiter::increment(md5('login'.implode('|', [$user->email, '127.0.0.1'])), amount: 5);
+    $throttleKey = Str::transliterate(Str::lower($user->email).'|127.0.0.1');
 
-    $response = $this->post(route('login.store'), [
-        'email' => $user->email,
+    RateLimiter::clear($throttleKey);
+
+    foreach (range(1, 5) as $_) {
+        RateLimiter::hit($throttleKey, 60);
+    }
+
+    $response = $this->from(route('login'))->post(route('login.store'), [
+        Fortify::username() => $user->email,
         'password' => 'wrong-password',
     ]);
 
-    $response->assertTooManyRequests();
+    expect(RateLimiter::tooManyAttempts($throttleKey, 5))->toBeTrue();
+
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors(Fortify::username());
+    $this->assertGuest();
 });

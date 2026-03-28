@@ -1,7 +1,11 @@
 <?php
 
-test('returns a successful response', function () {
-    $response = $this->get(route('home'));
+use App\Models\User;
 
-    $response->assertOk();
+test('settings route redirects to profile settings', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get('/settings')
+        ->assertRedirect('/settings/profile');
 });
